@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html>
+
+<!-- include com EJS -->
+<%- include("head") -%>
+
+<body>
+
+	<div class="gtco-loader"></div>
+
+	
+	<div id="page">
+
+		<%- include('header-menu') -%>
+
+        <%
+        //verifica se a variável está definida e se é true
+        if(typeof isHome === 'boolean' && isHome) {
+        %>
+            <%- include('header-index') -%>
+        <% } else { %>
+            <%- include('header') -%>
+        <% } %>

@@ -1,0 +1,111 @@
+<%- include('inc/header') -%>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          Tela Inicial
+        </h1>
+        <ol class="breadcrumb">
+          <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+          <li class="active">Usuários</li>
+        </ol>
+      </section>
+
+      <!-- Main content -->
+      <section class="content container-fluid">
+
+        <div class="row">
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box" onclick="window.location.href = '/admin/reservations'" style="cursor:pointer">
+              <span class="info-box-icon bg-aqua">
+                <i class="ion ion-ios-calendar"></i>
+              </span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Reservas</span>
+                <span class="info-box-number" id="nrreservations"><%= data.nrreservations %></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box" onclick="window.location.href = '/admin/contacts'" style="cursor:pointer">
+              <span class="info-box-icon bg-red">
+                <i class="ion ion-ios-chatboxes"></i>
+              </span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Contatos</span>
+                <span class="info-box-number" id="nrcontacts"><%= data.nrcontacts %></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+
+          <!-- fix for small devices only -->
+          <div class="clearfix visible-sm-block"></div>
+
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box" onclick="window.location.href = '/admin/menus'" style="cursor:pointer">
+              <span class="info-box-icon bg-green">
+                <i class="fa fa-cutlery"></i>
+              </span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Menu</span>
+                <span class="info-box-number" id="nrmenus"><%= data.nrmenus %></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box" onclick="window.location.href = '/admin/users'" style="cursor:pointer">
+              <span class="info-box-icon bg-yellow">
+                <i class="ion ion-ios-people-outline"></i>
+              </span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Usuários</span>
+                <span class="info-box-number" id="nrusers"><%= data.nrusers %></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+        </div>
+
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    
+<%- include('inc/footer') -%>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+  function refreshDashboard() {
+    fetch('/admin/dashboard')
+      .then(response => response.json())
+      .then(json => {
+        document.querySelector("#nrreservations").innerHTML = json.nrreservations;
+        document.querySelector("#nrcontacts").innerHTML = json.nrcontacts;
+        document.querySelector("#nrmenus").innerHTML = json.nrmenus;
+        document.querySelector("#nrusers").innerHTML = json.nrusers;
+      })
+  }
+
+  let socket = io();
+  socket.on("dashboard update", function(data) {
+    refreshDashboard();
+  })
+</script>
